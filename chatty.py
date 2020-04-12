@@ -12,7 +12,7 @@ GREETING_RESPONSES = ["hi", "hey", "hi there", "hello", "Feels nice talking to y
     for word in sentence.split():
         if word in GREETING_INPUTS:
             return random.choice(GREETING_RESPONSES)"""
-file1 = open('questions.txt', 'r') 
+file1 = open('resources/mainQuestions.txt', 'r') 
 questions=[]
 while True:
 	line=file1.readline();
