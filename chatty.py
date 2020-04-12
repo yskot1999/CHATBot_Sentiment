@@ -3,7 +3,9 @@ import nltk
 import numpy as np
 import random
 import string
-
+import sys
+sys.path.append('src')
+from getQuestions import questions
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey", "heyy","alright")
 GREETING_RESPONSES = ["hi", "hey", "hi there", "hello", "Feels nice talking to you"]
 
@@ -12,14 +14,6 @@ GREETING_RESPONSES = ["hi", "hey", "hi there", "hello", "Feels nice talking to y
     for word in sentence.split():
         if word in GREETING_INPUTS:
             return random.choice(GREETING_RESPONSES)"""
-file1 = open('resources/mainQuestions.txt', 'r') 
-questions=[]
-while True:
-	line=file1.readline();
-	questions.append(line);
-	if not line:
-		break
-file1.close()
 flag=True
 meeting_flag = True
 print(random.choice(GREETING_INPUTS));
