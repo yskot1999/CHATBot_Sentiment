@@ -1,11 +1,29 @@
+import re
+import nltk
+import os
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.externals import joblib
+
+nltk.download('stopwords')
+
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, '../models/ngram.pkl')
+ngram=joblib.load(filename)
+
 def predict(user_response):
-	print(user_response)
-	import re
-	import nltk
-	import os
-	nltk.download('stopwords')
-	from nltk.corpus import stopwords
-	from nltk.stem.porter import PorterStemmer
+	#print(user_response)
+	processedInp = preprocessResponse(user_response)
+	fittedInp = ngram.fit(processedInp)
+	print(processedInp)
+
+""" preprocess the user input and returns in the form of an array"""
+def preprocessResponse(user_response):
 	corpus=[]
 	review=re.sub('[^a-zA-Z]',' ',user_response)
 	review=review.lower()
@@ -14,14 +32,4 @@ def predict(user_response):
 	review=[ps.stem(word) for word in review if not word in set(stopwords.words('english'))]
 	review=' '.join(review)
 	corpus.append(review)
-	print(corpus)
-	from sklearn.feature_extraction.text import CountVectorizer
-	from sklearn.preprocessing import LabelEncoder,OneHotEncoder
-	from sklearn.svm import LinearSVC
-	from sklearn.metrics import accuracy_score
-	from sklearn.model_selection import train_test_split
-	from sklearn.externals import joblib
-	dirname = os.path.dirname(__file__)
-	filename = os.path.join(dirname, '../models/ngram.pkl')
-	#sys.path.append('../models')
-	ngram=joblib.load(filename)
+	return corpus
