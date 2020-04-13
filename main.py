@@ -6,6 +6,7 @@ import string
 import sys
 sys.path.append('src')
 import Questions
+import emotion
 
 #Strings used to identify and reply to casual first greetings
 GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey", "heyy","alright")
@@ -16,11 +17,11 @@ questions = Questions.getQuestions()
 flag=True
 print(random.choice(GREETING_INPUTS));
 while(flag==True):
-    user_response = input()
-    #user_response=user_response.lower()
-    if(user_response!='bye'):
-    	#print(random.choice(questions))        
-        print(Questions.chooseNextQuestion(questions))
-    else:
-        flag=False
-        print("ROBO: Bye! take care..")
+	user_response = input()
+	if(user_response!='bye'):
+		#print(random.choice(questions))
+		emotion.predict(user_response)        
+		print(Questions.chooseNextQuestion(questions))
+	else:
+		flag=False
+		print("ROBO: Bye! take care..")
