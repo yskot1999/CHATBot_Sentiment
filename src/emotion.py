@@ -13,14 +13,18 @@ from sklearn.externals import joblib
 nltk.download('stopwords')
 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, '../models/ngram.pkl')
-ngram=joblib.load(filename)
+filename_ngram= os.path.join(dirname, '../models/ngram.pkl')
+ngram=joblib.load(filename_ngram)
+filename_linear=os.path.join(dirname, '../models/linear.pkl')
+linear=joblib.load(filename_linear)
 
 def predict(user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
-	fittedInp = ngram.fit(processedInp)
+	fittedInp = ngram.transform(processedInp)
+	#moods=linear.predict(fittedInp)
 	print(processedInp)
+	#print(moods)
 
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
