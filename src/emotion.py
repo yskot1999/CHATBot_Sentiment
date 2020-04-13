@@ -22,9 +22,9 @@ def predict(user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
 	fittedInp = ngram.transform(processedInp)
-	#moods=linear.predict(fittedInp)
+	moods=linear.predict(fittedInp)
 	print(processedInp)
-	#print(moods)
+	print(moods)
 
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
