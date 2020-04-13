@@ -2,6 +2,7 @@ def predict(user_response):
 	print(user_response)
 	import re
 	import nltk
+	import os
 	nltk.download('stopwords')
 	from nltk.corpus import stopwords
 	from nltk.stem.porter import PorterStemmer
@@ -20,6 +21,7 @@ def predict(user_response):
 	from sklearn.metrics import accuracy_score
 	from sklearn.model_selection import train_test_split
 	from sklearn.externals import joblib
-	import sys
-	sys.path.append('../models')
-	ngram=joblib.load('ngram.pkl')
+	dirname = os.path.dirname(__file__)
+	filename = os.path.join(dirname, '../models/ngram.pkl')
+	#sys.path.append('../models')
+	ngram=joblib.load(filename)
