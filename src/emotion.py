@@ -17,14 +17,20 @@ filename_ngram= os.path.join(dirname, '../models/ngram.pkl')
 ngram=joblib.load(filename_ngram)
 filename_linear=os.path.join(dirname, '../models/linearSVC.pkl')
 linear=joblib.load(filename_linear)
+filename_random=os.path.join(dirname, '../models/random.pkl')
+random_model=joblib.load(filename_random)
 
 def predict(user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
 	fittedInp = ngram.transform(processedInp)
-	moods=linear.predict_proba(fittedInp)
+	moods1=linear.predict_proba(fittedInp)
+	moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
-	print(moods)
+	print("Linear SVC:")
+	print(moods1)
+	print("Random forest:")
+	print(moods2)
 
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
