@@ -15,14 +15,14 @@ nltk.download('stopwords')
 dirname = os.path.dirname(__file__)
 filename_ngram= os.path.join(dirname, '../models/ngram.pkl')
 ngram=joblib.load(filename_ngram)
-filename_linear=os.path.join(dirname, '../models/linear.pkl')
+filename_linear=os.path.join(dirname, '../models/linearSVC.pkl')
 linear=joblib.load(filename_linear)
 
 def predict(user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
 	fittedInp = ngram.transform(processedInp)
-	moods=linear.predict(fittedInp)
+	moods=linear.predict_proba(fittedInp)
 	print(processedInp)
 	print(moods)
 
