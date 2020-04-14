@@ -27,6 +27,8 @@ def predict(user_response):
 	moods1=linear.predict_proba(fittedInp)
 	moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
+
+        # Order of emotions: Anger, Happy , Hate, Sad, Worry
 	print("Linear SVC:")
 	print(moods1)
 	print("Random forest:")
