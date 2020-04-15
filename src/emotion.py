@@ -33,7 +33,7 @@ def predict(no_of_questions,current_emo,user_response):
 	#moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
 
-        # Order of emotions: Anger, Happy , Hate, Sad, Worry
+        # Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
 	print("Linear SVC:")
 	print(moods1)
 	"""
