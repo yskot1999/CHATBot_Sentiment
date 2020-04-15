@@ -55,11 +55,13 @@ def final_predict(current_emo):
 				maxindex=i
 				maxvalue=current_emo[i]
 		return maxindex
+
 """ calculates the average of a function """
 def calcAverage(no_of_questions,current_emo,moods1):
 	for i in range(len(moods1[0])):
 		moods1[0][i]=((current_emo[i]*no_of_questions) + moods1[0][i])/(no_of_questions + 1)
 	return moods1[0]
+
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
 	corpus=[]
