@@ -9,7 +9,11 @@ from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.externals import joblib
+"""
+if (happy>20 and happy<50) and sad>50
+	bored
 
+"""
 nltk.download('stopwords')
 
 dirname = os.path.dirname(__file__)
@@ -20,22 +24,29 @@ linear=joblib.load(filename_linear)
 filename_random=os.path.join(dirname, '../models/random.pkl')
 random_model=joblib.load(filename_random)
 
-def predict(user_response):
+def predict(no_of_questions,current_emo,user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
 	fittedInp = ngram.transform(processedInp)
 	moods1=linear.predict_proba(fittedInp)
+	current_emo=calcAverage(no_of_questions,current_emo,moods1)
 	moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
 	print("Linear SVC:")
 	print(moods1)
 	print("Random forest:")
 	print(moods2)
-
+	return current_emo
+""" calculates the average of a function """
+def calcAverage(no_of_questions,current_emo,moods1):
+	for i in range(len(moods1[0])):
+		moods1[0][i]=((current_emo[i]*no_of_questions) + moods1[0][i])/(no_of_questions + 1)
+	return moods1[0]
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
 	corpus=[]
-	review=re.sub('[^a-zA-Z]',' ',user_response)
+	review=str(user_response).encode('ascii','ignore').decode('ascii')
+	review=re.sub('[^a-zA-Z]',' ',review)
 	review=review.lower()
 	review=review.split()
 	ps=PorterStemmer()
