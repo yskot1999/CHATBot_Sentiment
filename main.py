@@ -23,6 +23,9 @@ while(flag==True):
 	if(user_response!='bye'):
 		#print(random.choice(questions))
 		current_emo=emotion.predict(no_of_questions,current_emo,user_response)
+		if(no_of_questions==3):
+			sentiment=emotion.final_predict(current_emo)
+			print(sentiment)
 		no_of_questions=no_of_questions+1        
 		print(Questions.chooseNextQuestion(questions))
 	else:
