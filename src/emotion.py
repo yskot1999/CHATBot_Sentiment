@@ -32,6 +32,8 @@ def predict(no_of_questions,current_emo,user_response):
 	current_emo=calcAverage(no_of_questions,current_emo,moods1)
 	moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
+
+        # Order of emotions: Anger, Happy , Hate, Sad, Worry
 	print("Linear SVC:")
 	print(moods1)
 	print("Random forest:")
