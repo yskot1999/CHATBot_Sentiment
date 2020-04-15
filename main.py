@@ -18,20 +18,28 @@ HAPPY_FILLERS = ["Great", "Nice", "Woah"]
 
 questions = Questions.getQuestions()
 
-#Chatbot code. Runs until flag is True.
+
+# Declare variables used.
 flag=True
-no_of_questions=0
+no_of_questions = 0
 current_emo=[0,0,0,0,0]
+current_mood = None
+
+# Initialize conversation with a random starter.
 print(random.choice(GREETING_INPUTS))
+
+# Chatbot code. Runs until flag is True.
 while(flag==True):
 	user_response = input()
 	if(user_response!='bye'):
 		#print(random.choice(questions))
 		current_emo=emotion.predict(no_of_questions,current_emo,user_response)
-		if(no_of_questions==3):
+		if(no_of_questions == 3):
 			sentiment=emotion.final_predict(current_emo)
 			print(sentiment)
 		no_of_questions=no_of_questions+1        
+		current_mood = emotion.final_predict(current_emo)
+		print(current_mood)
 		print(Questions.chooseNextQuestion(questions))
 	else:
 		flag=False
