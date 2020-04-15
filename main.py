@@ -15,12 +15,15 @@ questions = Questions.getQuestions()
 
 #Chatbot code. Runs until flag is True.
 flag=True
-print(random.choice(GREETING_INPUTS));
+no_of_questions=0
+current_emo=[0,0,0,0,0]
+print(random.choice(GREETING_INPUTS))
 while(flag==True):
 	user_response = input()
 	if(user_response!='bye'):
 		#print(random.choice(questions))
-		emotion.predict(user_response)        
+		current_emo=emotion.predict(no_of_questions,current_emo,user_response)
+		no_of_questions=no_of_questions+1        
 		print(Questions.chooseNextQuestion(questions))
 	else:
 		flag=False
