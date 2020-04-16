@@ -17,9 +17,9 @@ if (happy>20 and happy<50) and sad>50
 nltk.download('stopwords')
 
 dirname = os.path.dirname(__file__)
-filename_ngram= os.path.join(dirname, '../models/ngram.pkl')
+filename_ngram= os.path.join(dirname, '../models/ngramlat.pkl')
 ngram=joblib.load(filename_ngram)
-filename_linear=os.path.join(dirname, '../models/linearSVC.pkl')
+filename_linear=os.path.join(dirname, '../models/svmlatproba.pkl')
 linear=joblib.load(filename_linear)
 filename_random=os.path.join(dirname, '../models/random.pkl')
 random_model=joblib.load(filename_random)
@@ -30,36 +30,55 @@ def predict(no_of_questions,current_emo,user_response):
 	fittedInp = ngram.transform(processedInp)
 	moods1=linear.predict_proba(fittedInp)
 	current_emo=calcAverage(no_of_questions,current_emo,moods1)
-	moods2=random_model.predict_proba(fittedInp)
+	#moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
 
-        # Order of emotions: Anger, Happy , Hate, Sad, Worry
+        # Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
 	print("Linear SVC:")
 	print(moods1)
+	"""
 	print("Random forest:")
 	print(moods2)
+	"""
 	return current_emo
 
 """ predicts the final mood """
 def final_predict(current_emo):
+	print("in fp")
 	print(current_emo)
-	if((0.60>=current_emo[3]>=0.50) and current_emo[4]>=0.10):
+
+	maxindex=0
+	secondIndex = 0
+	maxvalue=0
+	secondValue = 0
+
+	for i in range(len(current_emo)):
+		if(current_emo[i]>=maxvalue):
+			secondIndex = maxindex
+			maxindex=i
+			secondValue = current_emo[secondIndex]
+			maxvalue = current_emo[maxindex] 
+			continue
+		elif(maxvalue > current_emo[i] >= secondValue):
+			secondIndex = i
+			secondValue = current_emo[secondIndex]
+			
+	print(maxvalue)
+	print(secondValue)
+
+	if((0.60 >= current_emo[3] >= 0.50) and current_emo[4] >= 0.10):
 		return 4
-	elif((0.50>=current_emo[1]>=0.20) and current_emo[3]>0.60):
+	elif((0.50 >= current_emo[1] >= 0.20) and current_emo[3] > 0.60):
 		return 5
 	else:
-		maxindex=0
-		maxvalue=0
-		for i in range(len(current_emo)):
-			if(current_emo[i]>=maxvalue):
-				maxindex=i
-				maxvalue=current_emo[i]
 		return maxindex
+
 """ calculates the average of a function """
 def calcAverage(no_of_questions,current_emo,moods1):
 	for i in range(len(moods1[0])):
 		moods1[0][i]=((current_emo[i]*no_of_questions) + moods1[0][i])/(no_of_questions + 1)
 	return moods1[0]
+
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
 	corpus=[]
