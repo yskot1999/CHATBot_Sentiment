@@ -17,29 +17,45 @@ if (happy>20 and happy<50) and sad>50
 nltk.download('stopwords')
 
 dirname = os.path.dirname(__file__)
-filename_ngram= os.path.join(dirname, '../models/ngramlat.pkl')
-ngram=joblib.load(filename_ngram)
-filename_linear=os.path.join(dirname, '../models/svmlatproba.pkl')
-linear=joblib.load(filename_linear)
+
+filename_ngram_lat= os.path.join(dirname, '../models/ngramlat.pkl')
+ngram_lat=joblib.load(filename_ngram_lat)
+
+filename_linear_lat=os.path.join(dirname, '../models/svmlatproba.pkl')
+linear_lat=joblib.load(filename_linear_lat)
+
 filename_random=os.path.join(dirname, '../models/random.pkl')
 random_model=joblib.load(filename_random)
+
+filename_ngram=os.path.join(dirname, '../models/ngram.pkl')
+ngram=joblib.load(filename_ngram)
+
+filename_linear=os.path.join(dirname, '../models/linearSVC.pkl')
+linear=joblib.load(filename_linear)
 
 def predict(no_of_questions,current_emo,user_response):
 	#print(user_response)
 	processedInp = preprocessResponse(user_response)
+
+	fittedInp = ngram_lat.transform(processedInp)
+	moodsfinal=linear_lat.predict_proba(fittedInp)
+
+	print("Final SVC:")
+	print(moodsfinal)
+
+	current_emo=calcAverage(no_of_questions,current_emo,moodsfinal)
+
 	fittedInp = ngram.transform(processedInp)
-	moods1=linear.predict_proba(fittedInp)
-	current_emo=calcAverage(no_of_questions,current_emo,moods1)
-	#moods2=random_model.predict_proba(fittedInp)
+	moods2=random_model.predict_proba(fittedInp)
+
+	moods3 = linear.predict_proba(fittedInp)
 	print(processedInp)
 
         # Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
-	print("Linear SVC:")
-	print(moods1)
-	"""
 	print("Random forest:")
 	print(moods2)
-	"""
+	print("Linear SVC:")
+	print(moods3)
 	return current_emo
 
 """ predicts the final mood """
