@@ -42,8 +42,9 @@ def predict(no_of_questions,current_emo,user_response):
         # If not encountered in current sentence. Do some modifications
         # to the returned probabilities.
 	if(invert == True):
-		maxint=0
-		maxval=0
+		print("Inverting...")
+		maxint = 0
+		maxval = 0
 		for i in range(len(moods1[0])):
 			if(moods1[0][i] >= maxval):
 				maxval = moods1[0][i]
@@ -77,13 +78,12 @@ def predict(no_of_questions,current_emo,user_response):
 			moods1[0][4] = moods1[0][2]
 			moods1[0][2] = temp
 
+	print("Current Prediction: ")
 	print(moods1)
 	current_emo = calcAverage(no_of_questions, current_emo,moods1)
 	#moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
     #Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
-	print("Linear SVC:")
-	print(moods1)
 	"""
 	print("Random forest:")
 	print(moods2)
@@ -115,13 +115,7 @@ def final_predict(current_emo):
 			
 	print(maxvalue)
 	print(secondValue)
-
-	if((0.60 >= current_emo[3] >= 0.50) and current_emo[4] >= 0.10):
-		return 4
-	elif((0.50 >= current_emo[1] >= 0.20) and current_emo[3] > 0.60):
-		return 5
-	else:
-		return maxindex
+	return maxindex
 
 """ calculates the average of a function """
 def calcAverage(no_of_questions, current_emo, moods1):

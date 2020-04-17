@@ -41,7 +41,7 @@ while(flag==True):
 
 		no_of_questions=no_of_questions+1        
 		current_mood = emotion.final_predict(current_emo)
-		print(current_mood)
+		#print(current_mood)
 		print(Questions.chooseNextQuestion(questions))
 
 	else:
