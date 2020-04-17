@@ -38,10 +38,12 @@ while(flag==True):
 			sentiment=emotion.final_predict(current_emo)
 			print(sentiment)
 			break
+
 		no_of_questions=no_of_questions+1        
 		current_mood = emotion.final_predict(current_emo)
 		print(current_mood)
 		print(Questions.chooseNextQuestion(questions))
+
 	else:
 		flag=False
 		print("ROBO: Bye! take care..")
