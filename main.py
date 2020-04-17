@@ -37,6 +37,7 @@ while(flag==True):
 		if(no_of_questions == 3):
 			sentiment=emotion.final_predict(current_emo)
 			print(sentiment)
+			break
 		no_of_questions=no_of_questions+1        
 		current_mood = emotion.final_predict(current_emo)
 		print(current_mood)

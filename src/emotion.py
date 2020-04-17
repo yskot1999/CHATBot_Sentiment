@@ -26,14 +26,37 @@ random_model=joblib.load(filename_random)
 
 def predict(no_of_questions,current_emo,user_response):
 	#print(user_response)
-	processedInp = preprocessResponse(user_response)
+	processedInp,invert = preprocessResponse(user_response)
 	fittedInp = ngram.transform(processedInp)
 	moods1=linear.predict_proba(fittedInp)
+	if(invert==True):
+		maxint=0
+		maxval=0
+		for i in range(len(moods1[0])):
+			if(moods1[0][i]>=maxval):
+				maxval=moods1[0][i]
+				maxint=i
+		if(maxint==0):
+			temp=moods1[0][0]
+			moods1[0][0]=moods1[0][3]
+			moods1[0][3]=0.5
+		elif(maxint==1):
+			temp=moods1[0][1]
+			moods1[0][1]=moods1[0][3]
+			moods1[0][3]=0.5
+		elif(maxint==2):
+			temp=moods1[0][2]
+			moods1[0][2]=moods1[0][4]
+			moods1[0][4]=temp
+		elif(maxint==4):
+			temp=moods1[0][4]
+			moods1[0][4]=moods1[0][2]
+			moods1[0][2]=temp
+	print(moods1)
 	current_emo=calcAverage(no_of_questions,current_emo,moods1)
 	#moods2=random_model.predict_proba(fittedInp)
 	print(processedInp)
-
-        # Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
+    #Update Order of emotions: Anger, Fear , Happy, Neutral, Sad 
 	print("Linear SVC:")
 	print(moods1)
 	"""
@@ -82,6 +105,9 @@ def calcAverage(no_of_questions,current_emo,moods1):
 """ preprocess the user input and returns in the form of an array"""
 def preprocessResponse(user_response):
 	corpus=[]
+	invert=True
+	if "not" not in user_response:
+		invert=False
 	review=str(user_response).encode('ascii','ignore').decode('ascii')
 	review=re.sub('[^a-zA-Z]',' ',review)
 	review=review.lower()
@@ -90,4 +116,4 @@ def preprocessResponse(user_response):
 	review=[ps.stem(word) for word in review if not word in set(stopwords.words('english'))]
 	review=' '.join(review)
 	corpus.append(review)
-	return corpus
+	return corpus,invert
