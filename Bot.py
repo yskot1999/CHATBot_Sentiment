@@ -32,8 +32,7 @@ def echo_all(updates):
             reply = get_reply(text,chat)
             print(reply)
             send_message(reply, chat)
-            questions = Questions.getQuestions()
-            send_message(Questions.chooseNextQuestion(questions),chat)
+            send_message(Questions.chooseNextQuestion(reply),chat)
         except Exception as e:
             print(e)
 
