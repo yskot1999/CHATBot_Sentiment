@@ -36,8 +36,8 @@ linear=joblib.load(filename_linear)
 def predict(no_of_questions,current_emo,user_response):
 	#print(user_response)
 	processedInp , invert = preprocessResponse(user_response)
-	fittedInp = ngram.transform(processedInp)
-	moods1=linear.predict_proba(fittedInp)
+	fittedInp = ngram_lat.transform(processedInp)
+	moods1=linear_lat.predict_proba(fittedInp)
 
         # If not encountered in current sentence. Do some modifications
         # to the returned probabilities.

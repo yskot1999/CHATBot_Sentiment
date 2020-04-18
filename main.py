@@ -7,6 +7,7 @@ import sys
 sys.path.append('src')
 import Questions
 import emotion
+import songs
 
 #Strings used to identify and reply to casual first greetings
 GREETING_INPUTS = ("Hello", "Hi", "Greetings", "Sup", "What's up", "Hey", "Heyy")
@@ -27,9 +28,11 @@ current_mood = None
 
 # Initialize conversation with a random starter.
 print(random.choice(GREETING_INPUTS))
-
+user_response=input()
 # Chatbot code. Runs until flag is True.
 while(flag==True):
+	print(Questions.chooseNextQuestion(questions))
+	no_of_questions=no_of_questions+1
 	user_response = input()
 	if(user_response!='bye'):
 		#print(random.choice(questions))
@@ -39,11 +42,15 @@ while(flag==True):
 			print(sentiment)
 			break
 
-		no_of_questions=no_of_questions+1        
+	#	no_of_questions=no_of_questions+1        
 		current_mood = emotion.final_predict(current_emo)
 		#print(current_mood)
-		print(Questions.chooseNextQuestion(questions))
+		#print(Questions.chooseNextQuestion(questions))
 
 	else:
 		flag=False
 		print("ROBO: Bye! take care..")
+
+#displays the song 
+fin_song=songs.predict_song(sentiment)
+print(fin_song)
