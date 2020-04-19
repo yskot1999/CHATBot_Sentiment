@@ -39,8 +39,12 @@ def echo_all(updates):
                 send_message(reply, chat)
                 send_message(Questions.chooseNextQuestion(reply),chat)
             else:
-                send_message(reply, chat)
-                bot.send_audio(chat_id=chat, audio=open('/home/yash/Downloads/01. Dil Dhadakne Do.mp3', 'rb'))
+                send_message("Your song is on the way",chat)
+                str=songs.predict_song(reply)
+                str=str.replace("\n","")
+                bot.send_audio(chat_id=chat, audio=open(str, 'rb'))
+                send_message("Enter /start for trying it again!!",chat)
+                send_message("Enter /song for another song ",chat)
         except Exception as e:
             print(e)
 
@@ -66,26 +70,32 @@ def get_reply(text,chat_id):
         print(Dict)
     
     #return rep
-    global int_asked
     flag=True
     no_of_questions = Dict["chat_id"]["no_of_questions"]
     current_emo=Dict["chat_id"]["current_emo"]
-    current_mood = None
+    current_mood = ''
     GREETING_INPUTS = ("Hello", "Hi", "Greetings", "Sup", "What's up", "Hey", "Heyy")
     answer = ''
     user_response = text
     user_response=user_response.lower()
-    if(user_response=='/start'):
+    if(user_response=='/start' or no_of_questions>3 ):
         answer = random.choice(GREETING_INPUTS)
         return answer
-    if(user_response!='bye'):
+    elif(user_response=="/song"):
+        str1=songs.predict_song(current_mood)
+        str1=str1.replace("\n","")
+        bot.send_audio(chat_id=chat, audio=open(str1, 'rb'))
+        return "None"
+    elif(user_response!='bye'):
         current_emo=emotion.predict(no_of_questions,current_emo,user_response)
         Dict["chat_id"]["current_emo"]=current_emo
         #sentiment=emotion.final_predict(current_emo)
         no_of_questions=no_of_questions+1
         if(no_of_questions==3):
             sentiment=emotion.final_predict(current_emo)
-            no_of_questions=0
+            current_mood=str(sentiment)
+            Dict["chat_id"]["no_of_questions"]=0
+            Dict["chat_id"]["current_emo"]=[0,0,0,0,0]
             return str(sentiment)
         else:
             Dict["chat_id"]["no_of_questions"]=no_of_questions
@@ -152,6 +162,7 @@ if __name__ == '__main__':
     import telegram
     bot = telegram.Bot(token='1048652720:AAHmKh2086fO87pyVVaYVrMxSQbwe_WOykk')
     Dict={}
+    global mood
     TOKEN = "1048652720:AAHmKh2086fO87pyVVaYVrMxSQbwe_WOykk"
     URL = "https://api.telegram.org/bot{}/".format(TOKEN)  
     print("hell")  

@@ -40,13 +40,13 @@ while True:
                 break
 file5.close()
 def predict_song(sentiment):
-	if(sentiment==0):
+	if(sentiment=="0"):
 		return random.choice(A_songs)
-	elif(sentiment==1):
+	elif(sentiment=="1"):
 		return random.choice(F_songs)
-	elif(sentiment==2):
+	elif(sentiment=="2"):
 		return random.choice(H_songs)
-	elif(sentiment==3):
+	elif(sentiment=="3"):
 		return random.choice(N_songs)
-	elif(sentiment==4):
+	elif(sentiment=="4"):
 		return random.choice(S_songs)
