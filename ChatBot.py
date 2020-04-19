@@ -73,7 +73,6 @@ def get_reply(text,chat_id):
     flag=True
     no_of_questions = Dict["chat_id"]["no_of_questions"]
     current_emo=Dict["chat_id"]["current_emo"]
-    current_mood = ''
     GREETING_INPUTS = ("Hello", "Hi", "Greetings", "Sup", "What's up", "Hey", "Heyy")
     answer = ''
     user_response = text
@@ -82,9 +81,10 @@ def get_reply(text,chat_id):
         answer = random.choice(GREETING_INPUTS)
         return answer
     elif(user_response=="/song"):
-        str1=songs.predict_song(current_mood)
+        sentiment=emotion.final_predict(current_emo)
+        str1=songs.predict_song(str(sentiment))
         str1=str1.replace("\n","")
-        bot.send_audio(chat_id=chat, audio=open(str1, 'rb'))
+        bot.send_audio(chat_id=chat_id, audio=open(str1, 'rb'))
         return "None"
     elif(user_response!='bye'):
         current_emo=emotion.predict(no_of_questions,current_emo,user_response)
