@@ -90,8 +90,8 @@ def get_reply(text,chat_id):
         str1=songs.predict_song(str(sentiment))
         str1=str1.replace("\n","")
         bot.send_audio(chat_id=chat_id, audio=open(str1, 'rb'))
-        send_message("Enter /start for trying it again!!",chat)
-        send_message("Enter /song for another song ",chat)
+        send_message("Enter /start for trying it again!!",chat_id)
+        send_message("Enter /song for another song ",chat_id)
         return "NULL"
     elif(user_response!='bye'):
         current_emo=emotion.predict(no_of_questions,current_emo,user_response)
