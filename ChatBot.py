@@ -38,7 +38,7 @@ def echo_all(updates):
             elif(reply=="NULL"):
                 print("NULL")
             elif reply in GREETING_INPUTS:
-                send_message(reply+"This is U.r.moodi",chat)
+                send_message(reply + ". This is U.r.moodi",chat)
                 send_message(Questions.chooseNextQuestion(reply),chat)
             else:
                 send_message("Your song is on the way",chat)
