@@ -49,4 +49,6 @@ def predict_song(sentiment):
 	elif(sentiment=="3"):
 		return random.choice(N_songs)
 	elif(sentiment=="4"):
-		return random.choice(S_songs)
+		str=random.choice(S_songs)
+		print(str)
+		return str

@@ -25,7 +25,7 @@ def get_last_update_id(updates):
 
 def echo_all(updates):
     #print("echo")
-    GREETING_INPUTS = ("Hello", "Hi", "Greetings", "Sup", "What's up", "Hey", "Heyy")
+    GREETING_INPUTS = ("Hello Amigo", "Hi", "Greetings","Hey buddy", "Heyy")
     for update in updates["result"]:
         try:
             text = update["message"]["text"]
@@ -35,11 +35,14 @@ def echo_all(updates):
             if(reply=="None"):
                 #send_message(reply, chat)
                 send_message(Questions.chooseNextQuestion(reply),chat)
+            elif(reply=="NULL"):
+                print("NULL")
             elif reply in GREETING_INPUTS:
-                send_message(reply, chat)
+                send_message(reply+"This is U.r.moodi",chat)
                 send_message(Questions.chooseNextQuestion(reply),chat)
             else:
                 send_message("Your song is on the way",chat)
+                send_message("Tuning in!!",chat)
                 str=songs.predict_song(reply)
                 str=str.replace("\n","")
                 bot.send_audio(chat_id=chat, audio=open(str, 'rb'))
@@ -73,7 +76,7 @@ def get_reply(text,chat_id):
     flag=True
     no_of_questions = Dict["chat_id"]["no_of_questions"]
     current_emo=Dict["chat_id"]["current_emo"]
-    GREETING_INPUTS = ("Hello", "Hi", "Greetings", "Sup", "What's up", "Hey", "Heyy")
+    GREETING_INPUTS = ("Hello Amigo", "Hi", "Greetings","Hey buddy", "Heyy")
     answer = ''
     user_response = text
     user_response=user_response.lower()
@@ -81,11 +84,15 @@ def get_reply(text,chat_id):
         answer = random.choice(GREETING_INPUTS)
         return answer
     elif(user_response=="/song"):
+        send_message("Your next song is on the way",chat_id)
+        send_message("Stay tuned",chat_id)
         sentiment=emotion.final_predict(current_emo)
         str1=songs.predict_song(str(sentiment))
         str1=str1.replace("\n","")
         bot.send_audio(chat_id=chat_id, audio=open(str1, 'rb'))
-        return "None"
+        send_message("Enter /start for trying it again!!",chat)
+        send_message("Enter /song for another song ",chat)
+        return "NULL"
     elif(user_response!='bye'):
         current_emo=emotion.predict(no_of_questions,current_emo,user_response)
         Dict["chat_id"]["current_emo"]=current_emo
